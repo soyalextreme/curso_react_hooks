@@ -1,17 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 
-const Header = () => {
-  const [darkMode, setDarkMode] = useState(false);
-
+const Header = ({ dark }) => {
   const hanldeClick = () => {
-    setDarkMode(!darkMode);
+    dark.set(!dark.val);
   };
 
   return (
-    <div className="Header">
+    <div
+      className="Header"
+       style={{
+          backgroundColor: dark.val ? "black" : "white",
+          color: dark.val ? "white" : "black",
+          padding: "2rem",
+          borderBottomWidth: "0.3rem",
+          borderBottomColor: "rgba(171, 224, 96, 0.767)",
+          borderBottomStyle: "solid"
+        }}
+    >
       <h1>React Hooks</h1>
       <button type="button" onClick={hanldeClick}>
-        {darkMode ? "Dark Mode" : "Light mode"}
+        {dark.val ? "Dark Mode" : "Light mode"}
       </button>
     </div>
   );

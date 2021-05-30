@@ -1,0 +1,42 @@
+
+
+.card-container {
+    display: flex;
+    flex-direction: row;
+    background-color: red;
+    width: 40%;
+    padding: 2rem;
+    margin: 2rem auto;
+    border-width: 0.3rem;
+    border-color: black;
+    border-style: dotted;
+}
+
+
+.card-info {
+    width: 60%;
+    text-align: center;
+}
+
+.card-info > strong {
+    color: rgba(172, 255, 47, 0.767);
+}
+
+.card-info > h2 {
+    color: rgba(119, 196, 5, 0.767);
+}
+
+.card-info > small {
+    color: rgba(171, 224, 96, 0.767);
+}
+
+
+.card-info > p {
+    color: rgba(171, 224, 96, 0.767);
+}
+
+
+.card-image > img {
+    border-radius: 50%;
+    width: 50%;
+}
