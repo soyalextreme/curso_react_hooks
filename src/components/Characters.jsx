@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer, useMemo } from "react";
+import React, { useEffect, useState, useReducer, useMemo, useRef } from "react";
 
 // styles
 import "./style/characters.css";
@@ -20,11 +20,15 @@ const favoriteReducer = (state, action) => {
 };
 
 const Characters = ({ dark }) => {
-  const [characters, setCharacters] = useState([]);
-  // eslint-disble-next-line
+  //? Reducer 
   const [favorites, dispatch] = useReducer(favoriteReducer, initalState);
-
+  
+  //? estado de app
+  const [characters, setCharacters] = useState([]);
   const [search, setSearch] = useState("");
+
+  //? referencias a valores
+  const searchInput = useRef(null);
 
   useEffect(() => {
     fetch("https://rickandmortyapi.com/api/character")
@@ -36,15 +40,14 @@ const Characters = ({ dark }) => {
     const isNotInFavorites = favorites.favorites.filter(
       (fav) => fav.id === favorite.id
     );
-
     // todavia no se encuentra en favoritos
     if (isNotInFavorites.length === 0) {
       dispatch({ type: "ADD_TO_FAVORITE", payload: favorite });
     }
   };
 
-  const handleChange = (event) => {
-    setSearch(event.target.value);
+  const handleChange = () => {
+    setSearch(searchInput.current.value);
   };
 
   // sin memo
@@ -68,7 +71,7 @@ const Characters = ({ dark }) => {
 
       {/* Barra de busqueda */}
       <div className="search">
-        <input type="text" value={search} onChange={handleChange} />
+        <input type="text" value={search} onChange={handleChange} ref={searchInput} />
       </div>
 
       {/* Personajes generales */}
