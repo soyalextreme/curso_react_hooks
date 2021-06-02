@@ -1,4 +1,13 @@
-import React, { useEffect, useState, useReducer, useMemo, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useReducer,
+  useMemo,
+  useRef,
+  useCallback,
+} from "react";
+
+import Search from "./Search"
 
 // styles
 import "./style/characters.css";
@@ -20,9 +29,9 @@ const favoriteReducer = (state, action) => {
 };
 
 const Characters = ({ dark }) => {
-  //? Reducer 
+  //? Reducer
   const [favorites, dispatch] = useReducer(favoriteReducer, initalState);
-  
+
   //? estado de app
   const [characters, setCharacters] = useState([]);
   const [search, setSearch] = useState("");
@@ -46,16 +55,21 @@ const Characters = ({ dark }) => {
     }
   };
 
-  const handleChange = () => {
+  const handleChange = useCallback(() => {
     setSearch(searchInput.current.value);
-  };
+  }, [])
 
-  // sin memo
+  //? Usando refrencias
+  // const handleChange = () => {
+  //   setSearch(searchInput.current.value);
+  // };
+
+  //? Filtrado sin memo 
   // const filteredUsers = characters.filter((user) => {
   //   return user.name.toLowerCase().includes(search.toLowerCase());
   // });
 
-  // con memo
+  //? Filtrado con memo
   const filteredUsers = useMemo(() => {
     return characters.filter((user) => {
       return user.name.toLowerCase().includes(search.toLowerCase());
@@ -69,10 +83,9 @@ const Characters = ({ dark }) => {
         <li key={favorite.id}>{favorite.name}</li>
       ))}
 
-      {/* Barra de busqueda */}
-      <div className="search">
-        <input type="text" value={search} onChange={handleChange} ref={searchInput} />
-      </div>
+        {/* Barra de busqueda */}
+        <Search search={search} searchInput={searchInput} handleChange={handleChange}/>
+
 
       {/* Personajes generales */}
       {filteredUsers.map((character) => {
