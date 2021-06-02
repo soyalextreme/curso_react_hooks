@@ -1,16 +1,18 @@
 import React, {
-  useEffect,
   useState,
   useReducer,
   useMemo,
   useRef,
   useCallback,
 } from "react";
+import useCharacters from "../hooks/useCharacters";
 
-import Search from "./Search"
+import Search from "./Search";
 
 // styles
 import "./style/characters.css";
+
+const API = "https://rickandmortyapi.com/api/character";
 
 const initalState = {
   favorites: [],
@@ -33,17 +35,19 @@ const Characters = ({ dark }) => {
   const [favorites, dispatch] = useReducer(favoriteReducer, initalState);
 
   //? estado de app
-  const [characters, setCharacters] = useState([]);
+  // const [characters, setCharacters] = useState([]);
   const [search, setSearch] = useState("");
 
   //? referencias a valores
   const searchInput = useRef(null);
 
-  useEffect(() => {
-    fetch("https://rickandmortyapi.com/api/character")
-      .then((response) => response.json())
-      .then((data) => setCharacters(data.results));
-  }, []);
+  // useEffect(() => {
+  //   fetch("https://rickandmortyapi.com/api/character")
+  //     .then((response) => response.json())
+  //     .then((data) => setCharacters(data.results));
+  // }, []);
+
+  const characters = useCharacters(API);
 
   const handleClick = (favorite) => {
     const isNotInFavorites = favorites.favorites.filter(
@@ -57,14 +61,14 @@ const Characters = ({ dark }) => {
 
   const handleChange = useCallback(() => {
     setSearch(searchInput.current.value);
-  }, [])
+  }, []);
 
   //? Usando refrencias
   // const handleChange = () => {
   //   setSearch(searchInput.current.value);
   // };
 
-  //? Filtrado sin memo 
+  //? Filtrado sin memo
   // const filteredUsers = characters.filter((user) => {
   //   return user.name.toLowerCase().includes(search.toLowerCase());
   // });
@@ -83,9 +87,12 @@ const Characters = ({ dark }) => {
         <li key={favorite.id}>{favorite.name}</li>
       ))}
 
-        {/* Barra de busqueda */}
-        <Search search={search} searchInput={searchInput} handleChange={handleChange}/>
-
+      {/* Barra de busqueda */}
+      <Search
+        search={search}
+        searchInput={searchInput}
+        handleChange={handleChange}
+      />
 
       {/* Personajes generales */}
       {filteredUsers.map((character) => {
